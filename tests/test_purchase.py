@@ -34,52 +34,57 @@ def test_purchase():
     driver.get("https://www.saucedemo.com/")
     time.sleep(2)  # Задержка для наблюдения
 
-    # Авторизация
-    driver.find_element(By.ID, "user-name").send_keys("standard_user")
-    time.sleep(1)
-    driver.find_element(By.ID, "password").send_keys("secret_sauce")
-    time.sleep(1)
-    driver.find_element(By.ID, "login-button").click()
-    time.sleep(2)
+    try:
+        # Авторизация
+        driver.find_element(By.ID, "user-name").send_keys("standard_user")
+        time.sleep(1)
+        driver.find_element(By.ID, "password").send_keys("secret_sauce")
+        time.sleep(1)
+        driver.find_element(By.ID, "login-button").click()
+        time.sleep(2)
 
-    # Выбор товара
-    driver.find_element(By.ID, "add-to-cart-sauce-labs-backpack").click()
-    time.sleep(2)
+        # Выбор товара
+        driver.find_element(By.ID, "add-to-cart-sauce-labs-backpack").click()
+        time.sleep(2)
 
-    # Переход в корзину
-    driver.find_element(By.CLASS_NAME, "shopping_cart_link").click()
-    time.sleep(2)
+        # Переход в корзину
+        driver.find_element(By.CLASS_NAME, "shopping_cart_link").click()
+        time.sleep(2)
 
-    # Проверка, что товар добавлен в корзину
-    cart_item = driver.find_element(By.CLASS_NAME, "inventory_item_name").text
-    assert cart_item == "Sauce Labs Backpack", "Товар не был добавлен в корзину"
-    time.sleep(2)
+        # Проверка, что товар добавлен в корзину
+        cart_item = driver.find_element(By.CLASS_NAME, "inventory_item_name").text
+        assert cart_item == "Sauce Labs Backpack", "Товар не был добавлен в корзину"
+        time.sleep(2)
 
-    # Оформление покупки
-    driver.find_element(By.ID, "checkout").click()
-    time.sleep(2)
-    driver.find_element(By.ID, "first-name").send_keys("Test")
-    time.sleep(1)
-    driver.find_element(By.ID, "last-name").send_keys("User")
-    time.sleep(1)
-    driver.find_element(By.ID, "postal-code").send_keys("12345")
-    time.sleep(1)
-    driver.find_element(By.ID, "continue").click()
-    time.sleep(2)
+        # Оформление покупки
+        driver.find_element(By.ID, "checkout").click()
+        time.sleep(2)
+        driver.find_element(By.ID, "first-name").send_keys("Test")
+        time.sleep(1)
+        driver.find_element(By.ID, "last-name").send_keys("User")
+        time.sleep(1)
+        driver.find_element(By.ID, "postal-code").send_keys("12345")
+        time.sleep(1)
+        driver.find_element(By.ID, "continue").click()
+        time.sleep(2)
 
-    # Завершение покупки
-    driver.find_element(By.ID, "finish").click()
-    time.sleep(2)
+        # Завершение покупки
+        driver.find_element(By.ID, "finish").click()
+        time.sleep(2)
 
-    # Проверка успешного завершения покупки
-    success_message = driver.find_element(By.CLASS_NAME, "complete-header").text
-    assert success_message == "Thank you for your order!", "Покупка не была завершена успешно"
+        # Проверка успешного завершения покупки
+        success_message = driver.find_element(By.CLASS_NAME, "complete-header").text
+        assert success_message == "Thank you for your order!", "Покупка не была завершена успешно"
 
-    logging.info("Покупка завершена успешно!")
+        logging.info("Покупка завершена успешно!")
 
-    time.sleep(2)
-
-    driver.quit()
+    except AssertionError as e:
+        logging.error(f"Ошибка: {str(e)}")
+    except Exception as e:
+        logging.error(f"Произошла непредвиденная ошибка: {str(e)}")
+    finally:
+        time.sleep(2)
+        driver.quit()
 
 
 if __name__ == "__main__":
